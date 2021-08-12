@@ -37,7 +37,7 @@ class _SignUpState extends State<SignUp> {
             padding: EdgeInsets.only(top: 15.0, left: 20.0, right: 20.0),
             child: Column(
               children: <Widget>[
-                TextField(
+                TextFormField(
                   keyboardType: TextInputType.emailAddress,
                   decoration: InputDecoration(
                       labelText: 'EMAIL',
@@ -53,7 +53,7 @@ class _SignUpState extends State<SignUp> {
                   ),
                 ),
                 SizedBox(height: 20.0),
-                TextField(
+                TextFormField(
                   keyboardType: TextInputType.emailAddress,
                   obscureText: true,
                   decoration: InputDecoration(
@@ -70,7 +70,7 @@ class _SignUpState extends State<SignUp> {
                   ),
                 ),
                 SizedBox(height: 20.0),
-                TextField(
+                TextFormField(
                   keyboardType: TextInputType.text,
                   decoration: InputDecoration(
                       labelText: 'USERNAME',
