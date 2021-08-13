@@ -1,19 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:ui_login/homepage.dart';
+import 'package:ui_login/services/auth.dart';
 import 'package:ui_login/signup.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() => runApp(LoginApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+
+  runApp(LoginApp());
+}
 
 class LoginApp extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: HomePage(),
+      home: Auth().handleAuth(),
       routes: {
         '/signup': (context) => SignUp(),
         '/login': (context) => LoginApp(),
+        '/index': (context) => IndexPage(),
       },
       // theme: ThemeData.dark(),
     );
@@ -38,6 +48,8 @@ class _HomePageState extends State<HomePage> {
 
     if (form.validate()){
       form.save();
+    }else{
+      return 'ew';
     }
   }
 
@@ -66,9 +78,8 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
+      body: ListView(
+        children: [
           Container(
             child: Stack(
               children: <Widget>[
@@ -109,16 +120,16 @@ class _HomePageState extends State<HomePage> {
                     validator: (value) => value.isEmpty ? 'Email is required' : validateEmail(value),
                     keyboardType: TextInputType.emailAddress,
                     decoration: InputDecoration(
-                      labelText: 'EMAIL',
-                      labelStyle: TextStyle(
-                        fontFamily: 'Montserrat',
-                        fontWeight: FontWeight.bold,
-                        color: Colors.grey,
-                      ),
-                      focusColor: Colors.green,
-                      focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.green),
-                      )
+                        labelText: 'EMAIL',
+                        labelStyle: TextStyle(
+                          fontFamily: 'Montserrat',
+                          fontWeight: FontWeight.bold,
+                          color: Colors.grey,
+                        ),
+                        focusColor: Colors.green,
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.green),
+                        )
                     ),
                   ),
                   SizedBox(height: 20.0),
@@ -150,76 +161,78 @@ class _HomePageState extends State<HomePage> {
                       child: Text(
                         'Forgot Password?',
                         style: TextStyle(
-                          color: Colors.green,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: 'Montserrat',
-                          decoration: TextDecoration.underline
+                            color: Colors.green,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Montserrat',
+                            decoration: TextDecoration.underline
                         ),
                       ),
                     ),
                   ),
                   SizedBox(height: 40.0),
                   Container(
-                    height: 40.0,
-                    child: Material(
-                      borderRadius: BorderRadius.circular(20),
-                      shadowColor: Colors.greenAccent,
-                      color: Colors.green,
-                      elevation: 7.0,
-                      child: GestureDetector(
-                        onTap: (){
-                          print('You tapped ta btn');
-                        },
-                        child: Center(
-                          child: Text(
-                            'LOGIN',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18.0,
-                              letterSpacing: 1.0,
-                              fontFamily: 'Montserrat'
+                      height: 40.0,
+                      child: Material(
+                        borderRadius: BorderRadius.circular(20),
+                        shadowColor: Colors.greenAccent,
+                        color: Colors.green,
+                        elevation: 7.0,
+                        child: GestureDetector(
+                          onTap: (){
+                              this.formKey.currentState.save();
+                              Auth().signIn(email, password, context);
+                            // }
+                          },
+                          child: Center(
+                            child: Text(
+                              'LOGIN',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18.0,
+                                  letterSpacing: 1.0,
+                                  fontFamily: 'Montserrat'
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    )
+                      )
                   ),
                   SizedBox(height: 20.0),
                   Container(
-                  height: 40.0,
+                    height: 40.0,
                     color: Colors.transparent,
                     child: Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Colors.black,
-                          width: 1.0,
-                          style: BorderStyle.solid,
-                        ),
-                        color: Colors.transparent,
-                        borderRadius: BorderRadius.circular(20.0),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Center(
-                            widthFactor: 2.0,
-                            child: FaIcon(
-                              FontAwesomeIcons.facebookF,
-                              size: 15.0,
-                            )
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: Colors.black,
+                            width: 1.0,
+                            style: BorderStyle.solid,
                           ),
-                          Center(
-                            child: Text(
-                              'Login with Facebook',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16.0
-                              ),
+                          color: Colors.transparent,
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Center(
+                                widthFactor: 2.0,
+                                child: FaIcon(
+                                  FontAwesomeIcons.facebookF,
+                                  size: 15.0,
+                                )
                             ),
-                          )
-                        ],
-                      )
+                            Center(
+                              child: Text(
+                                'Login with Facebook',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16.0
+                                ),
+                              ),
+                            )
+                          ],
+                        )
                     ),
                   ),
                 ],
@@ -231,10 +244,10 @@ class _HomePageState extends State<HomePage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Text(
-                'New Member ?',
-                style: TextStyle(
-                  fontFamily: 'Montserrat'
-                )
+                  'New Member ?',
+                  style: TextStyle(
+                      fontFamily: 'Montserrat'
+                  )
               ),
               SizedBox(width: 5.0),
               InkWell(
@@ -253,7 +266,7 @@ class _HomePageState extends State<HomePage> {
             ],
           )
         ],
-      ),
+      )
     );
   }
 }
