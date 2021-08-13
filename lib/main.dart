@@ -5,6 +5,7 @@ import 'package:ui_login/homepage.dart';
 import 'package:ui_login/services/auth.dart';
 import 'package:ui_login/signup.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:ui_login/forgot_password.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,6 +25,7 @@ class LoginApp extends StatelessWidget {
         '/signup': (context) => SignUp(),
         '/login': (context) => LoginApp(),
         '/index': (context) => IndexPage(),
+        '/forgot_password': (context) => ForgotPassword(),
       },
       // theme: ThemeData.dark(),
     );
@@ -46,7 +48,7 @@ class _HomePageState extends State<HomePage> {
   checkFields() {
     final form = formKey.currentState;
 
-    if (form.validate()){
+    if (form.validate() == true){
       form.save();
     }else{
       return 'ew';
@@ -158,6 +160,9 @@ class _HomePageState extends State<HomePage> {
                     alignment: Alignment(1.0, 0.0),
                     padding: EdgeInsets.only(top: 15.0, left: 20.0),
                     child: InkWell(
+                      onTap: (){
+                        Navigator.pushNamed(context, 'forgot_password');
+                      },
                       child: Text(
                         'Forgot Password?',
                         style: TextStyle(

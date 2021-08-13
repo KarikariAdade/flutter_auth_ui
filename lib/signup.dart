@@ -20,7 +20,7 @@ class _SignUpState extends State<SignUp> {
   checkFields() {
     final form = formKey.currentState;
 
-    if (form.validate()){
+    if (form.validate() == true){
       form.save();
     }
   }
