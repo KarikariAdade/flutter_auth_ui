@@ -51,4 +51,10 @@ class Auth {
 
   }
 
+
+  forgotPassword(String email, context){
+    return FirebaseAuth.instance
+        .sendPasswordResetEmail(email: email);
+  }
+
 }

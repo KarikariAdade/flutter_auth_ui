@@ -110,7 +110,7 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           Container(
-            padding: EdgeInsets.only(top: 35.0, left: 20.0, right: 20.0),
+            padding: EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0),
             child: Form(
               key: formKey,
               child: Column(
@@ -161,7 +161,7 @@ class _HomePageState extends State<HomePage> {
                     padding: EdgeInsets.only(top: 15.0, left: 20.0),
                     child: InkWell(
                       onTap: (){
-                        Navigator.pushNamed(context, 'forgot_password');
+                        Navigator.pushNamed(context, '/forgot_password');
                       },
                       child: Text(
                         'Forgot Password?',
@@ -267,7 +267,7 @@ class _HomePageState extends State<HomePage> {
                     fontSize: 17.0,
                   ),
                 ),
-              )
+              ),
             ],
           )
         ],
